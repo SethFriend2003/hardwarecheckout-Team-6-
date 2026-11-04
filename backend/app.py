@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from pymongo.errors import DuplicateKeyError
@@ -5,7 +6,8 @@ from db import users, projects, hardware
 from security import encrypt_userid, hash_password, check_password
 
 app = Flask(__name__)
-CORS(app)
+# Allow any origin by default; in the cloud set CORS_ORIGINS to the hosted frontend URL (comma separated)
+CORS(app, origins=os.environ.get("CORS_ORIGINS", "*").split(","))
 
 HW_SETS = ["HWSet1", "HWSet2"]
 
