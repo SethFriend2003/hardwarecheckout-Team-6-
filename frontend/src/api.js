@@ -17,6 +17,7 @@ export const createProject = (projectId, name, description, userid) =>
   request("/projects", "POST", { projectId, name, description, userid });
 export const joinProject = (projectId, userid) => request("/projects/join", "POST", { projectId, userid });
 export const getProject = (projectId) => request(`/projects/${projectId}`);
+export const getMembers = (projectId, userid) => request(`/projects/${projectId}/members?userid=${userid}`);
 export const getHardware = () => request("/hardware");
 export const checkout = (projectId, hwName, qty) =>
   request("/hardware/checkout", "POST", { projectId, hwName, qty });

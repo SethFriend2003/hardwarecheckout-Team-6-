@@ -1,8 +1,9 @@
-import { useState } from "react";
+import {useState } from "react";
 import Card from "../components/Card";
 import Button from "../components/Button";
 import TextInput from "../components/TextInput";
-import { createProject, joinProject } from "../api";
+import { createProject, joinProject} from "../api";
+import { Link } from "react-router";
 
 export default function Projects({ userid, projects, onProjectsChange, onSelect }) {
   const [newId, setNewId] = useState("");
@@ -30,17 +31,18 @@ export default function Projects({ userid, projects, onProjectsChange, onSelect 
     }
   };
 
-  const handleJoin = async (event) => {
-    event.preventDefault();
-    try {
-      await joinProject(joinId, userid);
-      addProject(joinId);
-      setMessage(`Joined ${joinId}.`);
-      setJoinId("");
-    } catch (err) {
-      setMessage(err.message);
-    }
-  };
+const handleJoin = async (event) => {
+  event.preventDefault();
+  try {
+    await joinProject(joinId, userid);
+    addProject(joinId);
+    setMessage(`Joined ${joinId}.`);
+    setJoinId("");
+  } catch (err) {
+    setMessage(err.message);
+  }
+};
+
 
   return (
     <>
@@ -51,7 +53,7 @@ export default function Projects({ userid, projects, onProjectsChange, onSelect 
         {projects.length === 0 && <p>None yet.</p>}
         <ul>
           {projects.map((pid) => (
-            <li key={pid}>{pid}</li>
+            <li key={pid}><Link to={`/projects/${pid}`}>{pid}</Link></li>
           ))}
         </ul>
       </Card>

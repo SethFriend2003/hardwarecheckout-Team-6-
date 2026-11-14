@@ -3,7 +3,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from pymongo.errors import DuplicateKeyError
 from db import users, projects, hardware
-from security import encrypt_userid, hash_password, check_password
+from security import encrypt_userid, decrypt_userid, hash_password, check_password
 
 app = Flask(__name__)
 # Allow any origin by default; in the cloud set CORS_ORIGINS to the hosted frontend URL (comma separated)
@@ -69,6 +69,16 @@ def get_project(pid):
     if not project:
         return jsonify(error="project not found"), 404
     return jsonify(project)
+
+@app.get("/api/projects/<pid>/members")
+def project_members(pid):
+    encryp = encrypt_userid(request.args.get("userid", ""))
+    project = projects.find_one({"projectId": pid}, {"_id": 0, "members": 1})
+    if not project:
+        return jsonify(error="project not found"), 404
+    if encryp not in project["members"]:
+        return jsonify(error="not a member of this project"), 403
+    return jsonify(members=[decrypt_userid(m) for m in project["members"]])
 
 # ---------- Hardware ----------
 @app.get("/api/hardware")

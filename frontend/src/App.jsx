@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Projects from "./pages/Projects";
 import Hardware from "./pages/Hardware";
+import ProjectDetail from "./pages/ProjectDetail";
 
 export default function App() {
   const [userid, setUserid] = useState(null);
@@ -54,6 +55,12 @@ export default function App() {
             path="/hardware"
             element={requireLogin(
               <Hardware projects={projects} projectId={activeProject} onSelect={setActiveProject} />
+            )}
+          />
+          <Route
+            path="/projects/:projectId"
+            element={requireLogin(
+              <ProjectDetail userid={userid} />
             )}
           />
         </Routes>

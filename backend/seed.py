@@ -1,8 +1,7 @@
 import sys
 from db import hardware, users, projects
 
-# Safe to run against a shared database: hardware is only (re)created when it is empty,
-# or when you pass --reset on purpose (which also forgets everything currently checked out).
+
 reset = "--reset" in sys.argv
 if reset or hardware.count_documents({}) == 0:
     hardware.delete_many({})
